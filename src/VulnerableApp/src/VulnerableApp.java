@@ -29,16 +29,9 @@ public class VulnerableApp extends HttpServlet {
             String data = request.getParameter("data");
             // Validate the input to allow only alphanumeric characters and spaces
             if (data != null && data.matches("[a-zA-Z0-9 ]*")) {
-                // Use ProcessBuilder for safer command execution
-                ProcessBuilder pb = new ProcessBuilder("echo", data);
-                pb.redirectErrorStream(true);
-                Process process = pb.start();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-                String line;
+                // Directly write sanitized input to the response
                 PrintWriter pw = response.getWriter();
-                while ((line = reader.readLine()) != null) {
-                    pw.println(line);
-                }
+                pw.println(data);
             } else {
                 response.getWriter().println("Invalid input.");
             }
